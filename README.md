@@ -1,1 +1,1 @@
-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
+Frontend del hub de bootcamps hecho en NextJs
