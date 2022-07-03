@@ -22,7 +22,7 @@ const RegisterComponent = () => {
 
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/local/register`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/auth/local/register`,
         userData
       );
       router.replace('/login');

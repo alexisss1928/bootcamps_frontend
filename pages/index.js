@@ -16,7 +16,7 @@ export default function Home() {
 
   const getBootcamps = async (e) => {
     try {
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps/?populate=comments,logo`);
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}api/bootcamps/?populate=comments,logo`);
       setBootcamps(data.data)
     } catch (error) {
       console.log(error)
@@ -25,7 +25,7 @@ export default function Home() {
 
   const handleSearch = async (e) => {
     try {
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps?filters[name][$contains]=${search}&populate=comments,logo`);
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}api/bootcamps?filters[name][$contains]=${search}&populate=comments,logo`);
       setBootcamps(data.data)
     } catch (error) {
       console.log(error)

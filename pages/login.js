@@ -14,7 +14,7 @@ const LoginComponent = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/local`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/auth/local`,
         userData
       );
       const token = localStorage.setItem('token', data.jwt);

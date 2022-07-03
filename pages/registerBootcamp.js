@@ -18,12 +18,12 @@ const RegisterBootcamp = () => {
     formData.append('files', files[0]);
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, formData)
+      .post(`${process.env.NEXT_PUBLIC_BASE_URL}api/upload`, formData)
       .then((response) => {
         const imageId = response.data[0].id;
 
         axios
-          .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps`, {
+          .post(`${process.env.NEXT_PUBLIC_BASE_URL}api/bootcamps`, {
             data: {
               ...bootcamp,
               logo: imageId,
@@ -35,7 +35,7 @@ const RegisterBootcamp = () => {
           .catch((error) => {
             alert(err.response.data.error.message);
             axios.delete(
-              `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload/files/${imageId}`
+              `${process.env.NEXT_PUBLIC_BASE_URL}api/upload/files/${imageId}`
             );
           });
       })
