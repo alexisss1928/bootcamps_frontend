@@ -7,8 +7,13 @@ body {
 }
 
 p {
-  font-size: 14px;
-  color: #898989;
+  font-size: 13px;
+    color: #898989;
+    margin: 5px 0;
+}
+
+h3 {
+  font-size: 13px;
 }
 
 * {

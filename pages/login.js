@@ -1,31 +1,24 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
 
-const RegisterComponent = () => {
+const LoginComponent = () => {
   const router = useRouter();
-  const passRef = useRef('');
   const [userData, setUserData] = useState({
-    username: '',
-    email: '',
+    identifier: '',
     password: '',
   });
-  // const passwordValidator = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    /* if (!passwordValidator.test(passRef.current.value)) {
-      alert('Weak Password')
-    } */
-
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/local/register`,
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/local`,
         userData
       );
-      router.replace('/login');
+      const token = localStorage.setItem('token', data.jwt);
+      router.replace('/registerBootcamp');
     } catch (err) {
       alert(err.response.data.error.message);
     }
@@ -51,37 +44,38 @@ const RegisterComponent = () => {
       <div className="wrapper">
         <div className="logo">
           <h1>
-            <a href="/">Bootcamps <span>Hub</span></a>
+            <a href="/">
+              Bootcamps <span>Hub</span>
+            </a>
           </h1>
         </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas magni earum natus dolorum tempora fugiat?</p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas magni
+          earum natus dolorum tempora fugiat?
+        </p>
         <form onSubmit={handleSubmit}>
-          <label htmlFor='username'>
-            Username:
-            </label>
-            <br />
+          <label>
+            Email:
             <input
               type="text"
-              name="username"
+              name="identifier"
               onChange={(e) => handleChange(e)}
             />
-          <label htmlFor='email'>
-            Email:
           </label>
-            <br />
-            <input type="text" name="email" onChange={(e) => handleChange(e)} />
           <br />
-          <label htmlFor='password'>
+          <label>
             Password:
-            </label>
             <input
               type="password"
               name="password"
-              ref={passRef}
               onChange={(e) => handleChange(e)}
             />
-          <button>Sign up</button>
-        <p>Ya tienes una cuenta? <a href="/login">Entra aqui</a></p>
+          </label>
+          <br />
+          <button>Sign in</button>
+          <p>
+            No tienes una cuenta? <a href="/register">Registrate aqui</a>
+          </p>
         </form>
       </div>
       <style jsx>{`
@@ -99,20 +93,14 @@ const RegisterComponent = () => {
           max-width: 400px;
         }
 
-        span {
-          display: block;
-          width: fit-content;
-          transition: .2s;
-        }
-
-        h1:hover span{
-          transform: rotate(385deg) scale(1.3);
+        h1:hover span {
+          transform: rotate(385deg) scale(1.2);
         }
 
         .logo a {
           text-decoration: none;
           display: flex;
-          justify-content: center; 
+          justify-content: center;
         }
 
         .logo a:active {
@@ -125,7 +113,8 @@ const RegisterComponent = () => {
           border-radius: 5px;
           color: #fff;
           position: relative;
-    bottom: 5px;
+          bottom: 5px;
+          transition: 0.2s;
         }
 
         form p {
@@ -165,4 +154,4 @@ const RegisterComponent = () => {
   );
 };
 
-export default RegisterComponent;
+export default LoginComponent;
