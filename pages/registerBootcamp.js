@@ -19,7 +19,11 @@ const RegisterBootcamp = () => {
     formData.append('files', files[0]);
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, formData)
+      .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, formData,{
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         const imageId = response.data[0].id;
 
