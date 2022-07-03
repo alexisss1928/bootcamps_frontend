@@ -9,6 +9,7 @@ const RegisterBootcamp = () => {
   const router = useRouter();
   const [bootcamp, setBootcamp] = useState({});
   const [files, setFiles] = useState();
+  const token = window.localStorage.getItem('token');
 
   const uploadImage = async (e) => {
     e.preventDefault();
@@ -23,17 +24,25 @@ const RegisterBootcamp = () => {
         const imageId = response.data[0].id;
 
         axios
-          .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps`, {
-            data: {
-              ...bootcamp,
-              logo: imageId,
+          .post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps`,
+            {
+              data: {
+                ...bootcamp,
+                logo: imageId,
+              },
             },
-          })
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          )
           .then((response) => {
-            alert('Creada con exito');
+            router.push('/')
           })
           .catch((error) => {
-            alert(err.response.data.error.message);
+            alert(error.response.data.error.message);
             axios.delete(
               `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload/files/${imageId}`
             );
@@ -94,12 +103,12 @@ const RegisterBootcamp = () => {
         </p>
       </div>
       <form onSubmit={uploadImage}>
-          <h3>*Todos los campos son requeridos</h3>
+        <h3>*Todos los campos son requeridos</h3>
         <div className="formcontainer">
           <div className="leftform">
             <div>
               <label htmlFor="name">Nombre del bootcamp</label>
-              <br/>
+              <br />
               <input
                 type="text"
                 name="name"
@@ -111,7 +120,7 @@ const RegisterBootcamp = () => {
             </div>
             <div>
               <label htmlFor="logo">Logo del bootcamp</label>
-              <br/>
+              <br />
               <input
                 type="file"
                 name="logo"
@@ -122,7 +131,7 @@ const RegisterBootcamp = () => {
             </div>
             <div>
               <label htmlFor="countries">Paises en los que trabaja</label>
-              <br/>
+              <br />
               <input
                 type="text"
                 name="countries"
@@ -134,7 +143,7 @@ const RegisterBootcamp = () => {
             </div>
             <div>
               <label htmlFor="batchsFrequency">Frecuencia de los batch</label>
-              <br/>
+              <br />
               <input
                 type="text"
                 name="batchsFrequency"
@@ -146,7 +155,7 @@ const RegisterBootcamp = () => {
             </div>
             <div>
               <label htmlFor="cost">Costo del bootcamp</label>
-              <br/>
+              <br />
               <input
                 type="number"
                 name="cost"
@@ -158,7 +167,7 @@ const RegisterBootcamp = () => {
             </div>
             <div>
               <label htmlFor="paidForm">Forma de pago</label>
-              <br/>
+              <br />
               <input
                 type="text"
                 name="paidForm"
@@ -172,7 +181,7 @@ const RegisterBootcamp = () => {
           <div className="rightform">
             <div>
               <label htmlFor="programs">Programas con los que cuenta</label>
-              <br/>
+              <br />
               <input
                 type="text"
                 name="programs"
@@ -184,7 +193,7 @@ const RegisterBootcamp = () => {
             </div>
             <div>
               <label htmlFor="registryLink">Enlace de registro</label>
-              <br/>
+              <br />
               <input
                 type="text"
                 name="registryLink"
@@ -198,7 +207,7 @@ const RegisterBootcamp = () => {
               <label htmlFor="globalStudents">
                 Cuantos estudiantes han pasado por el bootcamp?
               </label>
-              <br/>
+              <br />
               <input
                 type="number"
                 name="globalStudents"
@@ -212,7 +221,7 @@ const RegisterBootcamp = () => {
               <label htmlFor="currentStudents">
                 Cuantos estudiantes tiene actualmente?
               </label>
-              <br/>
+              <br />
               <input
                 type="number"
                 name="currentStudents"
@@ -226,7 +235,7 @@ const RegisterBootcamp = () => {
               <label htmlFor="studentsGraduated">
                 Cuantos estudiantes han terminado el bootcamp?
               </label>
-              <br/>
+              <br />
               <input
                 type="number"
                 name="studentsGraduated"
@@ -240,7 +249,7 @@ const RegisterBootcamp = () => {
               <label htmlFor="studentsDropout">
                 Que porcentaje de dropout tiene el bootcamp?
               </label>
-              <br/>
+              <br />
               <input
                 type="number"
                 name="studentsDropout"
@@ -318,7 +327,7 @@ const RegisterBootcamp = () => {
           margin: 0;
         }
 
-       /*  form {
+        /*  form {
           height: calc(100vh - 100px);
           display: flex;
           flex-direction: column;

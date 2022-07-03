@@ -78,7 +78,7 @@ export default function Home() {
             <p><span>% de dropout</span> <br/> {bootcamp.attributes.studentsDropout}</p>
             </div>
             <div className='right-side'>
-            <div className='logo'>
+            <div className='logo logoMobile'>
                 <img src={`${process.env.NEXT_PUBLIC_BASE_URL}${bootcamp.attributes.logo.data?.attributes.formats.small.url}`} />
               </div>
               <div className='card_title'>
@@ -144,6 +144,7 @@ export default function Home() {
           color: #fff;
           background-color: #a0a0cc;
           border-radius: 5px;
+          cursor: pointer;
         }
 
         .buttonCTA button{
@@ -277,6 +278,12 @@ export default function Home() {
 
         .addBootcampMobile {
           display: none;
+        }
+
+        @media (min-width: 750px) {
+          .logoMobile {
+            display: none;
+          }
         }
 
         @media (max-width: 750px) {
