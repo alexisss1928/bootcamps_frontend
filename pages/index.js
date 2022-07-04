@@ -1,34 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import Modal from '../components/modalBootcamp'
-import Head from 'next/head'
+import React, { useState, useEffect } from 'react';
+import Modal from '../components/modalBootcamp';
+import Head from 'next/head';
 import Link from 'next/link';
-import {useRouter} from 'next/router'
-import axios from 'axios'
+import { useRouter } from 'next/router';
+import axios from 'axios';
 import Bootcamp from '../components/bootcamp';
-
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
-  const [ search, setSearch ] = useState('');
-  const router = useRouter()
-  const ImageURL = '${process.env.NEXT_PUBLIC_BASE_URL}'
-  const [bootcamps, setBootcamps] = useState([])
+  const [search, setSearch] = useState('');
+  const router = useRouter();
+  const ImageURL = '${process.env.NEXT_PUBLIC_BASE_URL}';
+  const [bootcamps, setBootcamps] = useState([]);
 
   const getBootcamps = async (e) => {
     try {
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps/?populate=comments,logo`);
-      setBootcamps(data.data)
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps/?populate=comments,logo`
+      );
+      setBootcamps(data.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   const handleSearch = async (e) => {
     try {
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps?filters[name][$contains]=${search}&populate=comments,logo`);
-      setBootcamps(data.data)
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/bootcamps?filters[name][$contains]=${search}&populate=comments,logo`
+      );
+      setBootcamps(data.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -38,70 +41,145 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getBootcamps();    
-  }, [])
-
+    getBootcamps();
+  }, []);
 
   return (
     <div className="container">
       <Head>
         <title>Bootcamps Hub</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"></link>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+          rel="stylesheet"
+        ></link>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <nav className="nav">
         <h1>
           Bootcamps <span>Hub</span>
         </h1>
-        <div className='searchBar'>
-          <input type="search" name="" id="search" placeholder='Buscar por nombre' onKeyUp={handleSearch} onChange={handleChange}/>
+        <div className="searchBar">
+          <input
+            type="search"
+            name=""
+            id="search"
+            placeholder="Buscar por nombre"
+            onKeyUp={handleSearch}
+            onChange={handleChange}
+          />
         </div>
-        <button className='addBootcampDesktop' onClick={() => router.push('/registerBootcamp')}>
+        <button
+          className="addBootcampDesktop"
+          onClick={() => router.push('/registerBootcamp')}
+        >
           Registrar Bootcamp
         </button>
-        <button className='addBootcampMobile' onClick={() => router.push('/registerBootcamp')}>+</button>
+        <button
+          className="addBootcampMobile"
+          onClick={() => router.push('/registerBootcamp')}
+        >
+          +
+        </button>
       </nav>
       <main>
         {bootcamps.map((bootcamp) => {
-          return(
-          <div className='card'>
-            <div className='left-side'>
-              <div className='logo'>
-                <img src={`${process.env.NEXT_PUBLIC_BASE_URL}${bootcamp.attributes.logo.data?.attributes.formats.small.url}`} />
+          return (
+            <div className="card">
+              <div className="left-side">
+                <div className="logo">
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${bootcamp.attributes.logo.data?.attributes.formats.small.url}`}
+                  />
+                </div>
+                <h3>Estudiantes</h3>
+                <p>
+                  <span>Actuales</span> <br />{' '}
+                  {bootcamp.attributes.currentStudents}
+                </p>
+                <p>
+                  <span>Totales</span> <br />{' '}
+                  {bootcamp.attributes.globalStudents}
+                </p>
+                <p>
+                  <span>Graduados</span> <br />{' '}
+                  {bootcamp.attributes.studentsGraduated}
+                </p>
+                <p>
+                  <span>% de dropout</span> <br />{' '}
+                  {bootcamp.attributes.studentsDropout}
+                </p>
               </div>
-              <h3>Estudiantes</h3>
-            <p><span>Actuales</span> <br/> {bootcamp.attributes.currentStudents}</p>
-            <p><span>Totales</span> <br/> {bootcamp.attributes.globalStudents}</p>
-            <p><span>Graduados</span> <br/> {bootcamp.attributes.studentsGraduated}</p>
-            <p><span>% de dropout</span> <br/> {bootcamp.attributes.studentsDropout}</p>
-            </div>
-            <div className='right-side'>
-            <div className='logo logoMobile'>
-                <img src={`${process.env.NEXT_PUBLIC_BASE_URL}${bootcamp.attributes.logo.data?.attributes.formats.small.url}`} />
+              <div className="right-side">
+                <div className="logo logoMobile">
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${bootcamp.attributes.logo.data?.attributes.formats.small.url}`}
+                  />
+                </div>
+                <div className="card_title">
+                  <h2>
+                    <a href={`bootcamp/${bootcamp.id}`}>
+                      {bootcamp.attributes.name}
+                    </a>
+                  </h2>
+                  <p>{bootcamp.attributes.countries}</p>
+                </div>
+                <p>
+                  <span>Programas disponibles: </span>
+                  {bootcamp.attributes.programs}
+                </p>
+                <p>
+                  Se abre nuevo batch cada {bootcamp.attributes.batchsFrequency}{' '}
+                  aproximadamente
+                </p>
+                <p>
+                  <span>Costo: </span>{' '}
+                  {bootcamp.attributes.cost == 0
+                    ? 'Free'
+                    : `${bootcamp.attributes.cost}$`}
+                </p>
+                <p>
+                  <span>Formas de pago:</span> {bootcamp.attributes.paidForm}
+                </p>
+                <div className="commentsBox">
+                  <br />
+                  <h3>Comentarios</h3>
+                  <div className="comment">
+                    {bootcamp.attributes?.comments.data.length == 0 ? (
+                      <p>No hay comentarios</p>
+                    ) : (
+                      <p>
+                        <span>
+                          {
+                            bootcamp.attributes?.comments.data[0]?.attributes
+                              .name
+                          }
+                          :{' '}
+                        </span>
+                        {
+                          bootcamp.attributes?.comments.data[0]?.attributes
+                            .comment
+                        }
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {bootcamp.attributes?.comments.data.length == 0 ? null : (
+                  <a
+                    className="moreComment"
+                    onClick={() => router.push(`bootcamp/${bootcamp.id}`)}
+                  >
+                    Ver mas comentarios
+                  </a>
+                )}
+                <div className="buttonCTA">
+                  <a href={bootcamp.attributes.registryLink} target="_blank">
+                    <button>Registrate aqui</button>
+                  </a>
+                </div>
               </div>
-              <div className='card_title'>
-              <h2><a href={`bootcamp/${bootcamp.id}`}>{bootcamp.attributes.name}</a></h2>
-              <p>{bootcamp.attributes.countries}</p>
-              </div>
-            <p><span>Programas disponibles: </span>{bootcamp.attributes.programs}</p>
-            <p>Se abre nuevo batch cada {bootcamp.attributes.batchsFrequency} aproximadamente</p>
-            <p><span>Costo: </span> {bootcamp.attributes.cost == 0 ? 'Free' : `${bootcamp.attributes.cost}$`}</p>
-            <p><span>Formas de pago:</span> {bootcamp.attributes.paidForm}</p>
-            <div className='commentsBox'>
-              <br/>
-              <h3>Comentarios</h3>
-              <div className='comment'>
-              {bootcamp.attributes?.comments.data.length == 0 ? <p>No hay comentarios</p> : <p><span>{bootcamp.attributes?.comments.data[0]?.attributes.name}: </span>{bootcamp.attributes?.comments.data[0]?.attributes.comment}</p>}
-              </div>
-            </div>
-            {bootcamp.attributes?.comments.data.length == 0 ? null : <a className='moreComment' onClick={() => router.push(`bootcamp/${bootcamp.id}`)}>Ver mas comentarios</a>}
-              <div className='buttonCTA'>
-              <button href={bootcamp.attributes.registryLink}>Registrate aqui</button>
-              </div>
-            </div>
-            {/* <div>
+              {/* <div>
             <button onClick={() => setShowModal(true)}>Open Modal</button>
             <Modal
                 onClose={() => setShowModal(false)}
@@ -110,16 +188,15 @@ export default function Home() {
                 <Bootcamp bootcamp={bootcamp}/>
             </Modal>
         </div> */}
-          </div>
-)
-        }  
-        )}
+            </div>
+          );
+        })}
       </main>
 
       <style jsx>{`
-      .container {
-        padding: 20px;
-      }
+        .container {
+          padding: 20px;
+        }
 
         nav {
           display: flex;
@@ -147,7 +224,11 @@ export default function Home() {
           cursor: pointer;
         }
 
-        .buttonCTA button{
+        button:hover {
+          background-color: #7b7bad;
+        }
+
+        .buttonCTA button {
           width: 100%;
           margin-top: 10px;
         }
@@ -173,12 +254,11 @@ export default function Home() {
           background-color: rgb(255, 255, 255);
           overflow: hidden;
           box-shadow: 5px 5px 50px 20px #cdcdcd6b;
-          transition: .2s;
+          transition: 0.2s;
         }
 
         .card:hover {
           box-shadow: 10px 10px 30px 20px #cdcdcdb3;
-          transform: translate(-15px, -15px);
         }
 
         .card h2 {
@@ -224,7 +304,7 @@ export default function Home() {
 
         .card_title a {
           text-decoration: none;
-          color: #c4c4c4; 
+          color: #c4c4c4;
         }
 
         .left-side {
@@ -235,7 +315,7 @@ export default function Home() {
 
         .left-side h3 {
           font-size: 16px;
-    color: #b870ef;
+          color: #b870ef;
         }
 
         .right-side {
@@ -248,7 +328,6 @@ export default function Home() {
 
         .comment {
           padding: 10px;
-          background-color: #a0a0cc1f;
           border-radius: 5px;
         }
 
@@ -294,7 +373,8 @@ export default function Home() {
           .card_title {
             gao: 0;
           }
-          .searchBar, nav .addBootcampDesktop {
+          .searchBar,
+          nav .addBootcampDesktop {
             display: none;
           }
 
@@ -304,11 +384,10 @@ export default function Home() {
 
           .card:hover {
             box-shadow: revert;
-            transform: unset;;
+            transform: unset;
           }
         }
       `}</style>
     </div>
   );
-  
 }

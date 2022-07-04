@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {useRouter} from 'next/router'
 
 const commentsBox = (id) => {
+  const router = useRouter()
   const [comment, setComment] = useState({
     name: '',
     comment: '',
   });
-
-  console.log(comment);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,6 +33,7 @@ const commentsBox = (id) => {
         name: '',
         comment: '',
       });
+      router.push(`${id.id}`)
     } catch (error) {
       console.log(error);
     }
@@ -40,12 +41,14 @@ const commentsBox = (id) => {
 
   return (
     <div>
+      <h3>Dejanos tu opinion del bootcamp</h3>
       <form onSubmit={SendComment}>
         <div>
           <label htmlFor="name">
             Tu nombre
             <span>Opcional</span>
           </label>
+          <br />
           <input
             type="text"
             name="name"
@@ -57,8 +60,10 @@ const commentsBox = (id) => {
         </div>
         <div>
           <label htmlFor="comment">Comentario</label>
+          <br />
           <textarea
             type="text"
+            rows="7"
             name="comment"
             placeholder="Escribe tu comentario acerca del bootcamp"
             autoComplete="off"
@@ -69,6 +74,50 @@ const commentsBox = (id) => {
         </div>
         <button type="submit">Agregar comentario</button>
       </form>
+      <style jsx>{`
+        .container {
+          padding: 20px;
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        label {
+          margin: 15px 0;
+        }
+
+        input, textarea {
+          background-color: #e6e6e6;
+          width: 100%;
+          height: 45px;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          margin-bottom: 15px;
+        }
+        
+        textarea {
+          height: unset;
+          resize: none;
+        }
+
+        button {
+          border: none;
+          padding: 10px 15px;
+          color: #fff;
+          background-color: #a0a0cc;
+          border-radius: 5px;
+          width: 100%;
+          margin: 15px 0;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #7b7bad;
+        }
+      `}</style>
     </div>
   );
 };

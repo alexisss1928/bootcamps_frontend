@@ -19,7 +19,7 @@ const RegisterBootcamp = () => {
     formData.append('files', files[0]);
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, formData,{
+      .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, formData, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -43,7 +43,7 @@ const RegisterBootcamp = () => {
             }
           )
           .then((response) => {
-            router.push('/')
+            router.push('/');
           })
           .catch((error) => {
             alert(error.response.data.error.message);
@@ -172,14 +172,22 @@ const RegisterBootcamp = () => {
             <div>
               <label htmlFor="paidForm">Forma de pago</label>
               <br />
-              <input
+              <select name="select">
+                <option value="Transfer">Transferencia</option>
+                <option value="Cash" selected>
+                  Efectivo
+                </option>
+                <option value="Paypal">Paypal</option>
+                <option value="Other">Otras</option>
+              </select>
+              {/* <input
                 type="text"
                 name="paidForm"
                 placeholder="De que formas el aspirante podra cancelar sus pagos"
                 autoComplete="off"
                 onChange={handleChange}
                 required
-              />
+              /> */}
             </div>
           </div>
           <div className="rightform">
@@ -360,7 +368,7 @@ const RegisterBootcamp = () => {
           margin: 15px;
         }
 
-        input {
+        input, select {
           width: 100%;
           max-width: 600px;
           height: 45px;
