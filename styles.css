@@ -8,11 +8,26 @@ body {
 
 p {
   font-size: 13px;
+  line-height: 19px;
     color: #898989;
 }
 
-h3, label {
+label {
   font-size: 13px;
+}
+
+h1 {
+  font-size: 32.348px;
+}
+
+h2 {
+  font-size: 18.72px;
+  color: #b870ef;
+}
+
+h3 {
+  font-size: 15.6px;
+  color: #b870ef;
 }
 
 * {

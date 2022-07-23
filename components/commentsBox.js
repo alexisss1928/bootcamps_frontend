@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faThumbsUp as faThumbsUpReg,
+  faThumbsDown as faThumbsDownReg,
+} from '@fortawesome/free-regular-svg-icons';
 
 const commentsBox = (id) => {
-  const router = useRouter()
+  const router = useRouter();
+  const [like, setLike] = useState('');
   const [comment, setComment] = useState({
     name: '',
     comment: '',
+    calification: '',
   });
 
   const handleChange = (event) => {
+    if (event.target.name === 'calification') {
+      setLike(event.target.value);
+    }
+
     const { name, value } = event.target;
     setComment({
       ...comment,
@@ -26,6 +38,7 @@ const commentsBox = (id) => {
           data: {
             ...comment,
             bootcamp: id,
+            calification: comment.calification === 'bueno' ? true : false,
           },
         }
       );
@@ -33,7 +46,7 @@ const commentsBox = (id) => {
         name: '',
         comment: '',
       });
-      router.push(`${id.id}`)
+      router.push(`${id.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +59,7 @@ const commentsBox = (id) => {
         <div>
           <label htmlFor="name">
             Tu nombre
-            <span>Opcional</span>
+            <span className="optional">Opcional</span>
           </label>
           <br />
           <input
@@ -57,6 +70,39 @@ const commentsBox = (id) => {
             onChange={handleChange}
             value={comment.name}
           />
+        </div>
+        <div className="calification">
+          <label>Como calificarias este bootcamp</label>
+          <label for="bueno" className="goodComment labelThumbs">
+            <input
+              type="radio"
+              id="bueno"
+              name="calification"
+              value="bueno"
+              onChange={handleChange}
+              required
+            />
+            {like === 'bueno' ? (
+              <FontAwesomeIcon icon={faThumbsUp} />
+            ) : (
+              <FontAwesomeIcon icon={faThumbsUpReg} />
+            )}
+          </label>
+          <label for="malo" className="badComment labelThumbs">
+            <input
+              type="radio"
+              id="malo"
+              name="calification"
+              value="malo"
+              onChange={handleChange}
+              required
+            />
+            {like === 'malo' ? (
+              <FontAwesomeIcon icon={faThumbsDown} />
+            ) : (
+              <FontAwesomeIcon icon={faThumbsDownReg} />
+            )}
+          </label>
         </div>
         <div>
           <label htmlFor="comment">Comentario</label>
@@ -88,7 +134,14 @@ const commentsBox = (id) => {
           margin: 15px 0;
         }
 
-        input, textarea {
+        .optional {
+          margin-left: 5px;
+          color: #b5b5b5;
+          font-size: 12px;
+        }
+
+        input,
+        textarea {
           background-color: #e6e6e6;
           width: 100%;
           height: 45px;
@@ -97,7 +150,7 @@ const commentsBox = (id) => {
           border-radius: 5px;
           margin-bottom: 15px;
         }
-        
+
         textarea {
           height: unset;
           resize: none;
@@ -116,6 +169,36 @@ const commentsBox = (id) => {
 
         button:hover {
           background-color: #7b7bad;
+        }
+
+        .calification {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 30px;
+          margin-bottom: 15px;
+        }
+
+        .calification input {
+          width: 0px;
+        }
+
+        .calification .labelThumbs {
+          font-size: 24px;
+          margin: 0;
+        }
+
+        .calification input {
+          margin: 0;
+          height: 0;
+        }
+
+        .goodComment {
+          color: #92d27b;
+        }
+
+        .badComment {
+          color: #ff7878;
         }
       `}</style>
     </div>

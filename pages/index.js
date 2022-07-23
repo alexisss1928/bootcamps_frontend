@@ -143,7 +143,6 @@ export default function Home() {
                   <span>Formas de pago:</span> {bootcamp.attributes.paidForm}
                 </p>
                 <div className="commentsBox">
-                  <br />
                   <h3>Comentarios</h3>
                   <div className="comment">
                     {bootcamp.attributes?.comments.data.length == 0 ? (
@@ -257,6 +256,10 @@ export default function Home() {
           transition: 0.2s;
         }
 
+        .card p {
+          margin: 5px 0;
+        }
+
         .card:hover {
           box-shadow: 10px 10px 30px 20px #cdcdcdb3;
         }
@@ -309,7 +312,7 @@ export default function Home() {
 
         .left-side {
           background-color: #a0a0cc29;
-          min-width: 250px;
+          width: 200px;
           text-align: center;
         }
 
@@ -322,14 +325,16 @@ export default function Home() {
           width: 100%;
         }
 
-        /* .commentsBox {
-          padding: 10px 0;
-        } */
+        .commentsBox {
+          background-color: #ededed75;
+    padding: 10px;
+    border-radius: 10px;
+        }
 
-        .comment {
+        /* .comment {
           padding: 10px;
           border-radius: 5px;
-        }
+        } */
 
         .moreComment {
           font-size: 12px;

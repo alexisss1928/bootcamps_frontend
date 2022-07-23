@@ -1,8 +1,17 @@
 import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import CommentsBox from '../../components/commentsBox';
 
 export default function Bootcamp({ bootcamp }) {
   const router = useRouter();
+  const [filtered, setFiltered] = useState('All')
+
+  const handleFilter = (filterSelected) => {
+    setFiltered(filterSelected)
+  }
+
   return (
     <div className="wrapper">
       <button className="backButton" onClick={() => router.push('/')}>
@@ -79,12 +88,31 @@ export default function Bootcamp({ bootcamp }) {
         </div>
       </div>
       <div className="commentsBox">
-        <h3>Comentarios</h3>
-        {bootcamp.data.attributes.comments.data.map((item) => {
+        <h2>Comentarios</h2>
+        <div className='commentCalificationFilterBox'>
+          <button onClick={() => handleFilter('all')}>All</button>
+        <button onClick={() => handleFilter('good')} className='goodCommentButtonFilter'><FontAwesomeIcon className="goodComment" icon={faThumbsUp} /> {bootcamp.data.attributes.comments.data.filter((comment) => comment.attributes.calification  ).length}</button>
+        <button onClick={() =>  handleFilter('bad')} className='badCommentButtonFilter'><FontAwesomeIcon className="badComment" icon={faThumbsDown} /> {bootcamp.data.attributes.comments.data.filter((comment) => !comment.attributes.calification  ).length}</button>
+        </div>
+        {bootcamp.data.attributes.comments.data.filter((comment) => {
+          if (filtered === 'good'){
+            return comment.attributes.calification
+          } else if (filtered === 'bad') {
+            return !comment.attributes.calification
+          } else {
+            return comment.attributes.calification || !comment.attributes.calification
+          }
+        }).map((item) => {
           return (
             <div className="comment">
               <p>
-                <span>{item?.attributes.name}</span>: {item?.attributes.comment}
+                <span>
+                  {item?.attributes.name === ''
+                    ? 'Anonimo'
+                    : item?.attributes.name}
+                </span>
+                : <span className={item.attributes.calification ? 'goodComment' : 'badComment'}>{item.attributes.calification ? <FontAwesomeIcon className="goodComment" icon={faThumbsUp} /> : <FontAwesomeIcon className="badComment" icon={faThumbsDown} />}</span>{' '}
+                {item?.attributes.comment}
               </p>
             </div>
           );
@@ -99,10 +127,6 @@ export default function Bootcamp({ bootcamp }) {
           max-width: 800px;
           margin-left: auto;
           margin-right: auto;
-        }
-
-        h3 {
-          color: #b870ef;
         }
 
         .head {
@@ -194,6 +218,26 @@ export default function Bootcamp({ bootcamp }) {
           top: 20px;
           right: 20px;
         }
+
+        .goodComment {
+          color: #92d27b;
+        }
+
+        .badComment {
+          color: #ff7878;
+      }
+
+      .goodCommentButtonFilter {
+        background-color: #92d27b;
+      }
+
+      .badCommentButtonFilter {
+        background-color: #ff7878;
+    }
+
+      .commentCalificationFilterBox button {
+        margin-right: 10px ;
+      }
       `}</style>
     </div>
   );
